@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: focus-zone-webhook
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_APP_PASSWORD
+        sync: false
+      - key: TEMPLATE_LINK
+        sync: false
+      - key: PAGECLIP_SECRET
+        sync: false
+    autoDeploy: true 

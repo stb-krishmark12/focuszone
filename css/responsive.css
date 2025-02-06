@@ -1,0 +1,168 @@
+/* Mobile First Approach */
+/* Base styles are for mobile (320px and up) */
+
+/* Small adjustments for very small screens */
+@media screen and (max-width: 360px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    .price-tag {
+        font-size: 2rem;
+    }
+
+    .sale-price {
+        font-size: 2.5rem;
+    }
+}
+
+/* Hero Section Mobile Adjustments */
+@media screen and (max-width: 767px) {
+    .hero-content {
+        flex-direction: column;
+    }
+
+    .hero-section {
+        padding-top: 2rem;
+        min-height: auto;
+    }
+
+    .hero-image {
+        margin-top: 2rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .buy-button {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+    }
+
+    .buy-button button {
+        width: 100%;
+        padding: 0.8rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+/* Tablet (768px and up) */
+@media screen and (min-width: 768px) {
+    .container {
+        padding: 0 40px;
+    }
+
+    .hero-content {
+        gap: 3rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .price-tag {
+        gap: 2rem;
+    }
+}
+
+/* Desktop (1024px and up) */
+@media screen and (min-width: 1024px) {
+    .container {
+        padding: 0 60px;
+    }
+
+    .hero-content {
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hero-text {
+        flex: 1;
+    }
+
+    .hero-image {
+        flex: 1;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Hover effects only for desktop */
+    .feature-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .buy-button button:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* Large Desktop (1200px and up) */
+@media screen and (min-width: 1200px) {
+    .container {
+        padding: 0;
+    }
+
+    .hero-section {
+        min-height: 90vh;
+    }
+
+    .features-grid {
+        gap: 3rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .buy-button {
+        display: none;
+    }
+
+    .hero-section {
+        min-height: auto;
+    }
+
+    .feature-item {
+        break-inside: avoid;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1a1a1a;
+        --text-color: #ffffff;
+        --primary-color: #2D3436;
+    }
+
+    .feature-item {
+        background: #2d2d2d;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, var(--background-color) 0%, #2d2d2d 100%);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .feature-item, .buy-button button {
+        transition: none;
+    }
+} 

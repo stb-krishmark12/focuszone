@@ -20,6 +20,11 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Account for fixed header */
+}
+
 body {
     font-family: var(--font-body);
     line-height: 1.6;
@@ -27,6 +32,7 @@ body {
     background-color: var(--background-color);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 #app {
@@ -97,7 +103,7 @@ section {
         rgba(255, 215, 0, 0.1) 100%
     );
     animation: fadeIn 1s ease-out;
-    padding-top: 60px;
+    padding-top: 70px;
 }
 
 .hero-content {
@@ -179,22 +185,26 @@ section {
     .features-grid {
         grid-template-columns: 1fr;
         justify-items: center;
+        gap: 1.5rem;
+        padding: 0 1rem;
     }
 
     .nav-cta {
-        padding: 0.6rem 1.2rem;
+        padding: 0.5rem 1rem;
         font-size: 0.9rem;
+        min-width: auto;
     }
 
     .floating-buy {
         bottom: 10px;
         right: 10px;
-        width: calc(100% - 20px);
+        width: calc(100% - 32px);
     }
 
     .buy-button button {
-        width: 100%;
-        padding: 15px;
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 40px;
     }
 
     .cta-popup {
@@ -208,11 +218,253 @@ section {
     }
 
     .feature-item {
-        max-width: 340px;
+        width: 100%;
+        max-width: none;
+        padding: 1.5rem;
     }
 
     .feature-preview {
         height: 200px;
+    }
+
+    .hero-section {
+        padding-top: 100px;
+        min-height: auto;
+        padding-bottom: 2rem;
+    }
+
+    h1 {
+        font-size: clamp(1.8rem, 3.5vw, 2.2rem);
+        padding: 0 1rem;
+        margin-top: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    h2 {
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        padding: 0 1rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .hero-content {
+        margin-top: 1rem;
+        gap: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-text {
+        padding: 0 1rem;
+    }
+
+    .hero-text p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .quick-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .story-content {
+        flex-direction: column;
+        padding: 0 1rem;
+    }
+
+    .pricing {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .price-container {
+        width: 90%;
+        max-width: 300px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin: 0 auto;
+    }
+
+    .static-buy {
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .info-container {
+        width: 90%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .payment-info,
+    .included-info {
+        width: 100%;
+        margin: 1.5rem 0;
+        text-align: left;
+    }
+
+    .payment-info h3,
+    .included-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .payment-info ul,
+    .included-info ul {
+        padding-left: 1.2rem;
+    }
+
+    .payment-info li,
+    .included-info li {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+    }
+
+    /* Adjust floating previews in mobile */
+    .preview-float {
+        display: none;
+    }
+
+    /* Adjust pricing card for mobile */
+    .price-container {
+        width: 100%;
+        max-width: 300px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+    }
+
+    /* Adjust text colors for better contrast on white background */
+    .price-container .regular-price {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .price-container .offer-timer {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .pricing {
+        padding: 0 1rem;
+        min-height: auto;
+    }
+
+    .buy-button button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 40px;
+    }
+
+    /* General text adjustments */
+    p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    /* Stats adjustments */
+    .stat-number {
+        font-size: 1.6rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    /* Feature text adjustments */
+    .feature-item h3 {
+        font-size: 1.1rem;
+        margin: 1rem 0 0.3rem;
+    }
+
+    .feature-item p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Navigation adjustments */
+    .top-nav {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo img {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Price text adjustments */
+    .regular-price {
+        font-size: 1.4rem;
+    }
+
+    .sale-price {
+        font-size: 2.4rem;
+    }
+
+    .offer-timer {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* Achievement list adjustments */
+    .achievement-list li {
+        font-size: 0.9em;
+        margin: 10px 0;
+        gap: 0.6rem;
+    }
+
+    /* Section spacing */
+    section {
+        padding: 3rem 0;
+    }
+
+    /* Container spacing for mobile */
+    .container {
+        padding-top: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
+    /* Add space between sections */
+    section {
+        margin-top: 1rem;
+    }
+}
+
+/* Additional mobile button refinements */
+@media (max-width: 480px) {
+    .buy-button button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .floating-buy {
+        bottom: 15px;
+    }
+
+    .floating-buy button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
     }
 }
 
@@ -349,19 +601,19 @@ section {
 .regular-price {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: line-through;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
 }
 
 .sale-price {
     color: var(--accent-color);
-    font-size: 3rem;
+    font-size: 2.4rem;
 }
 
 .offer-timer {
     background-color: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--accent-color);
     position: relative;
     z-index: 2;
@@ -743,12 +995,13 @@ footer {
     .floating-buy {
         bottom: 10px;
         right: 10px;
-        width: calc(100% - 20px);
+        width: calc(100% - 32px);
     }
 
     .buy-button button {
-        width: 100%;
-        padding: 15px;
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 40px;
     }
 
     .cta-popup {
@@ -756,8 +1009,24 @@ footer {
         max-width: none;
     }
 
+    /* Adjust static buy button */
     .static-buy {
-        width: 90%;
+        width: auto;
+        max-width: 280px;
+        margin: 1.5rem auto;
+    }
+
+    /* Adjust floating buy button */
+    .floating-buy button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    /* Price container buttons */
+    .price-container .buy-button button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -879,10 +1148,9 @@ footer {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
-    padding: 1rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -903,8 +1171,8 @@ footer {
 }
 
 .logo img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     object-fit: contain;
     transition: transform 0.3s ease;
 }
@@ -937,14 +1205,46 @@ footer {
 /* Mobile Adjustments */
 @media (max-width: 768px) {
     .nav-cta {
-        padding: 0.6rem 1.2rem;
+        padding: 0.5rem 1rem;
         font-size: 0.9rem;
+        min-width: auto;
     }
 
     .floating-buy {
         bottom: 10px;
         right: 10px;
-        width: calc(100% - 20px);
+        width: calc(100% - 32px);
+    }
+
+    .buy-button button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 40px;
+    }
+
+    .cta-popup {
+        width: 90%;
+        max-width: none;
+    }
+
+    /* Adjust static buy button */
+    .static-buy {
+        width: auto;
+        max-width: 280px;
+        margin: 1.5rem auto;
+    }
+
+    /* Adjust floating buy button */
+    .floating-buy button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    /* Price container buttons */
+    .price-container .buy-button button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
     }
 }
 

@@ -10,6 +10,27 @@ document.addEventListener('DOMContentLoaded', function() {
             showPaymentModal();
         });
     });
+
+    // Special handling for nav CTA button
+    const navCta = document.querySelector('.nav-cta');
+    if (navCta) {
+        navCta.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Scroll to pricing section
+            const pricingSection = document.getElementById('cta');
+            if (pricingSection) {
+                pricingSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+        
+        // Remove payment-trigger class from nav CTA
+        navCta.classList.remove('payment-trigger');
+    }
 });
 
 function showPaymentModal() {

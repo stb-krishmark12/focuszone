@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const templateRouter = require('./api/send-template');
 const testRouter = require('./api/test-email');
-const webhookHandler = require('./webhook/handler');
 
 // Load environment variables
 dotenv.config();
@@ -25,7 +24,6 @@ app.use(express.static(path.join(__dirname)));
 // Routes
 app.use('/api', templateRouter);
 app.use('/api', testRouter);
-app.use('/webhook', webhookHandler);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

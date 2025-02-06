@@ -12,9 +12,6 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
-    
-    <!-- Add Pageclip -->
-    <link rel="stylesheet" href="https://s.pageclip.co/v1/pageclip.css" media="screen">
 </head>
 <body>
     <div id="app">
@@ -80,19 +77,10 @@
                     </div>
                 </div>
 
-                <!-- Pageclip Form -->
-                <form action="https://send.pageclip.co/api_Di7klwV16DKeb4PZ0Dopr42iFBeeJwq3/focus-zone" class="pageclip-form" method="post">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" required>
-                        <input type="email" name="email" placeholder="Your Email" required>
-                        <input type="tel" name="phone" placeholder="Phone Number" required>
-                        <input type="hidden" name="template" value="focus-zone">
-                        <input type="hidden" name="amount" value="50">
-                        <button type="submit" class="pageclip-form__submit">
-                            <span>Get Template Now</span>
-                        </button>
-                    </div>
-                </form>
+                <!-- Buy Button -->
+                <div class="buy-button">
+                    <button onclick="initiatePayment()">Get Template Now</button>
+                </div>
 
                 <div class="payment-info">
                     <h3>💳 Secure Payment via Razorpay</h3>
@@ -126,9 +114,15 @@
         </footer>
     </div>
 
+    <!-- Floating Buy Button -->
+    <div id="floating-buy" class="buy-button">
+        <button onclick="initiatePayment()">Get Template Now</button>
+    </div>
+
     <!-- Scripts -->
-    <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="js/main.js"></script>
     <script src="js/parallax.js"></script>
+    <script src="js/payment.js"></script>
 </body>
 </html> 

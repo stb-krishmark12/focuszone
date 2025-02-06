@@ -19,6 +19,14 @@ class PaymentHandler {
                 email: '',
                 contact: ''
             },
+            modal: {
+                ondismiss: function() {
+                    console.log('Payment modal closed');
+                }
+            },
+            notes: {
+                template_name: 'The Focus Zone'
+            },
             theme: {
                 color: '#0984E3'
             }
@@ -27,6 +35,19 @@ class PaymentHandler {
 
     // Initialize payment
     initiatePayment() {
+        // Show email/phone collection modal
+        const email = prompt('Please enter your email:');
+        const phone = prompt('Please enter your phone number:');
+        
+        if (!email || !phone) {
+            alert('Email and phone number are required');
+            return;
+        }
+        
+        // Update Razorpay options with user details
+        this.options.prefill.email = email;
+        this.options.prefill.contact = phone;
+        
         const rzp = new Razorpay(this.options);
         
         rzp.on('payment.failed', function (response) {
@@ -44,7 +65,7 @@ class PaymentHandler {
                 razorpay_payment_id: response.razorpay_payment_id,
                 amount: this.amount,
                 currency: this.currency,
-                email: response.email
+                email: this.options.prefill.email
             };
 
             // Send confirmation email

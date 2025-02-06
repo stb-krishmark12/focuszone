@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const emailService = require('../js/email-service');
 
-router.post('/api/send-template', async (req, res) => {
+router.post('/send-template', async (req, res) => {
     try {
         console.log('Received email request:', req.body);
         const { paymentId, email } = req.body;

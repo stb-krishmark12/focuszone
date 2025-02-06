@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
 // Routes
-app.use('/api', templateRouter);
-app.use('/api', testRouter);
+app.use('/api/send-template', templateRouter);
+app.use('/api/test-email', testRouter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -56,6 +56,15 @@ app.use((err, req, res, next) => {
     res.status(500).json({ 
         error: 'Something went wrong!',
         message: err.message
+    });
+});
+
+// Handle 404 errors
+app.use((req, res) => {
+    console.log('404 Not Found:', req.url);
+    res.status(404).json({
+        error: 'Not Found',
+        message: `Cannot ${req.method} ${req.url}`
     });
 });
 

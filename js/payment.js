@@ -90,7 +90,7 @@ class PaymentHandler {
     async sendConfirmationEmail(paymentData) {
         try {
             console.log('Sending confirmation email to:', paymentData.email);
-            const response = await fetch('/api/send-template', {
+            const response = await fetch('/api/send-template/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

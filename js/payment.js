@@ -34,17 +34,22 @@ class PaymentHandler {
     }
 
     // Initialize payment
-    initiatePayment() {
-        // Show email/phone collection modal
-        const email = prompt('Please enter your email:');
-        const phone = prompt('Please enter your phone number:');
-        
-        if (!email || !phone) {
-            alert('Email and phone number are required');
+    initiatePayment(event) {
+        event.preventDefault();
+
+        // Get form data
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+
+        // Validate form
+        if (!name || !email || !phone) {
+            alert('Please fill in all fields');
             return;
         }
-        
+
         // Update Razorpay options with user details
+        this.options.prefill.name = name;
         this.options.prefill.email = email;
         this.options.prefill.contact = phone;
         
@@ -76,13 +81,12 @@ class PaymentHandler {
             // Show success message
             this.showSuccessMessage();
             
+            // Close modal
+            closePaymentModal();
+            
         } catch (error) {
             console.error('Error processing payment:', error);
-            // Show success message anyway since payment was successful
-            this.showSuccessMessage();
-            
-            // Log the error for debugging
-            console.error('Email sending failed but payment was successful:', error);
+            alert('There was an error processing your payment. Please contact support.');
         }
     }
 
@@ -143,6 +147,9 @@ class PaymentHandler {
 const paymentHandler = new PaymentHandler();
 
 // Global function to initiate payment (called from HTML)
-function initiatePayment() {
-    paymentHandler.initiatePayment();
+function initiatePayment(event) {
+    if (event) {
+        event.preventDefault();
+    }
+    paymentHandler.initiatePayment(event);
 } 

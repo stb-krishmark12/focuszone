@@ -10,23 +10,90 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
 </head>
 <body>
     <div id="app">
-        <!-- Hero Section -->
-        <section id="hero" class="hero-section">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
             <div class="container">
-                <h1>STB - The Focus Zone</h1>
-                <h2>The Ultimate Notion Template for Peak Productivity</h2>
+                <div class="nav-left">
+                    <a href="#" class="logo">
+                        <img src="images/logo.png" alt="Focus Zone Logo" width="40" height="40">
+                    </a>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-cta payment-trigger">Get Started</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section" data-animate="fade-in">
+            <div class="container">
+                <h1 data-animate="fade-up">Transform Your Productivity</h1>
+                <h2>A Complete System I Built to 10x My Focus & Achievement</h2>
                 <div class="hero-content">
                     <div class="hero-text">
-                        <h3>📌 Stay Focused, Achieve More</h3>
-                        <p>A structured system for tracking goals, habits, and progress.</p>
+                        <div class="hero-avatar" data-animate="fade-in">
+                            <img src="images/me.png" alt="Krishna's Photo" loading="lazy">
+                        </div>
+                        <h3 data-animate="slide-in">👋 Hey, I'm Krishna</h3>
+                        <p>After struggling with productivity for years, I built this system that helped me achieve more in 3 months than I did in a year. Now I'm sharing it with you.</p>
+                        <div class="highlight-box">
+                            <span class="highlight-text">✨ My Personal Productivity System</span>
+                        </div>
                     </div>
                     <div class="hero-image">
                         <img src="images/template-preview.png" alt="Focus Zone Template Preview" loading="lazy">
+                    </div>
+                </div>
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">3x</span>
+                        <span class="stat-label">More Tasks Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Hours Saved Weekly</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5+</span>
+                        <span class="stat-label">Projects Completed Early</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Story Section -->
+        <section id="story" class="story-section">
+            <div class="container">
+                <h2 data-animate="fade-up">My Productivity Journey</h2>
+                <div class="story-content">
+                    <div class="story-image" data-animate="fade-in">
+                        <img src="images/me.png" alt="Krishna's Photo" loading="lazy">
+                    </div>
+                    <div class="story-text" data-animate="slide-in">
+                        <p style="color: var(--accent-color);">In 2023, as a Computer Science & Technology student, I was juggling multiple responsibilities and ambitious goals. I needed a system that could handle it all.</p>
+                        <p>After trying countless productivity apps and methods, I built this Notion template - a complete system that transformed how I manage my time and goals.</p>
+                        <p>Using this system, I've managed to:</p>
+                        <ul class="achievement-list">
+                            <li>💼 Successfully run two brands while studying</li>
+                            <li>💰 Develop and maintain 4 different income sources</li>
+                            <li>🎯 Complete 4 valuable internships</li>
+                            <li>🚀 Secure placement in a multinational company</li>
+                            <li>💪 Maintain a consistent gym routine</li>
+                            <li>❤️ Balance academics, business, and personal life</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">This isn't just a template - it's the exact system that helps me manage multiple streams of work while maintaining a balanced life.</p>
                     </div>
                 </div>
             </div>
@@ -35,27 +102,48 @@
         <!-- Features Section -->
         <section id="features" class="features-section parallax-section">
             <div class="container">
-                <h2>🚀 Features</h2>
+                <h2 data-animate="fade-up">The Complete Productivity System</h2>
+                <p class="section-subtitle">Everything you need to transform your productivity, in one place</p>
                 <div class="features-grid">
-                    <div class="feature-item" data-delay="0">
-                        <h3>Goal Tracking</h3>
-                        <p>Daily, Weekly, Quarterly & Yearly Goal Tracking</p>
+                    <div class="feature-item" data-delay="0" data-animate="scale-in">
+                        <span class="feature-icon">🎯</span>
+                        <h3>Goal Achievement System</h3>
+                        <p>The exact framework I use to break down big goals into achievable daily tasks</p>
+                        <div class="feature-preview" data-preview="Break down your big goals into actionable daily tasks with my proven goal-setting framework">
+                            <img src="images/features/goals-preview.png" alt="Goal Achievement System Preview" loading="lazy">
+                        </div>
                     </div>
-                    <div class="feature-item" data-delay="100">
+                    <div class="feature-item" data-delay="100" data-animate="scale-in">
+                        <span class="feature-icon">📊</span>
                         <h3>Habit Tracker</h3>
                         <p>Stay disciplined with built-in habit tracking</p>
+                        <div class="feature-preview" data-preview="Track your daily habits and build consistency with visual progress indicators">
+                            <img src="images/features/habits-preview.png" alt="Habit Tracker Preview" loading="lazy">
+                        </div>
                     </div>
-                    <div class="feature-item" data-delay="200">
+                    <div class="feature-item" data-delay="200" data-animate="scale-in">
+                        <span class="feature-icon">📚</span>
                         <h3>Book Reading List</h3>
                         <p>Maintain your reading list for continuous learning</p>
+                        <div class="feature-preview" data-preview="Organize your reading list and track your learning progress with smart categorization">
+                            <img src="images/features/reading-preview.png" alt="Reading List Preview" loading="lazy">
+                        </div>
                     </div>
-                    <div class="feature-item" data-delay="300">
+                    <div class="feature-item" data-delay="300" data-animate="scale-in">
+                        <span class="feature-icon">📈</span>
                         <h3>Stats Dashboard</h3>
                         <p>Measure your progress with detailed statistics</p>
+                        <div class="feature-preview" data-preview="Visualize your progress with beautiful charts and actionable insights">
+                            <img src="images/features/dashboard-preview.png" alt="Stats Dashboard Preview" loading="lazy">
+                        </div>
                     </div>
-                    <div class="feature-item" data-delay="400">
+                    <div class="feature-item" data-delay="400" data-animate="scale-in">
+                        <span class="feature-icon">📅</span>
                         <h3>Weekly Reports</h3>
                         <p>Get insights and track improvements weekly</p>
+                        <div class="feature-preview" data-preview="Generate automated weekly reports to track your improvements and stay motivated">
+                            <img src="images/features/weekly-preview.png" alt="Weekly Reports Preview" loading="lazy">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,18 +156,33 @@
                 <p>Boost your productivity today with The Focus Zone Notion Template.</p>
                 
                 <div class="pricing">
-                    <div class="price-tag">
-                        <span class="regular-price">₹100</span>
-                        <span class="sale-price">₹50</span>
+                    <div class="price-container">
+                        <div class="price-tag">
+                            <span class="regular-price">₹100</span>
+                            <span class="sale-price">₹50</span>
+                        </div>
+                        <div class="offer-timer">
+                            <p>Limited Time Offer - Only for next 10 days!</p>
+                        </div>
                     </div>
-                    <div class="offer-timer">
-                        <p>Limited Time Offer - Only for next 10 days!</p>
+                    <div class="pricing-previews">
+                        <div class="preview-float">
+                            <img src="images/features/goals-preview.png" alt="Preview">
+                        </div>
+                        <div class="preview-float">
+                            <img src="images/features/habits-preview.png" alt="Preview">
+                        </div>
+                        <div class="preview-float">
+                            <img src="images/features/dashboard-preview.png" alt="Preview">
+                        </div>
+                        <div class="preview-float">
+                            <img src="images/features/weekly-preview.png" alt="Preview">
+                        </div>
                     </div>
-                </div>
-
-                <!-- Buy Button -->
-                <div class="buy-button">
-                    <button onclick="initiatePayment()">Get Template Now</button>
+                    <!-- Static Buy Button -->
+                    <div class="buy-button static-buy">
+                        <button class="payment-trigger">Get Template Now</button>
+                    </div>
                 </div>
 
                 <div class="payment-info">
@@ -104,7 +207,7 @@
         <!-- Footer -->
         <footer>
             <div class="container">
-                <p>&copy; 2025 The Focus Zone. All Rights Reserved.</p>
+                <p>&copy; 2025 STB Company. All Rights Reserved.</p>
                 <div class="footer-links">
                     <a href="mailto:thestbcompany@gmail.com">Support</a>
                     <a href="#privacy">Privacy Policy</a>
@@ -115,8 +218,43 @@
     </div>
 
     <!-- Floating Buy Button -->
-    <div id="floating-buy" class="buy-button">
-        <button onclick="initiatePayment()">Get Template Now</button>
+    <div id="floating-buy" class="buy-button floating-buy">
+        <button class="payment-trigger">Get Template Now</button>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Get The Focus Zone Template</h2>
+            <div class="modal-price">
+                <span class="regular-price">₹100</span>
+                <span class="sale-price">₹50</span>
+            </div>
+            <form id="payment-form" class="payment-form" onsubmit="initiatePayment(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                </div>
+                <button type="submit" class="submit-button">Proceed to Payment →</button>
+            </form>
+            <div class="modal-footer">
+                <div class="secure-badge">
+                    <span>🔒</span>
+                    <p>Your information is secure and encrypted</p>
+                </div>
+                <p> Secure Payment via Razorpay</p>
+                <p>✨ Instant Delivery via Email</p>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -124,5 +262,6 @@
     <script src="js/main.js"></script>
     <script src="js/parallax.js"></script>
     <script src="js/payment.js"></script>
+    <script src="js/scroll-animations.js"></script>
 </body>
 </html> 

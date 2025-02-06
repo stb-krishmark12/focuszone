@@ -37,6 +37,18 @@ class EmailService {
 
                     <div style="margin: 20px 0;">
                         <h3>Quick Steps to Get Started:</h3>
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #2D3436;">Watch the Setup Guide:</h4>
+                            <iframe src="https://scribehow.com/embed/How_to_Add_The_Focus_Zone_to_Your_Private_Page__aXFNIqOCSlOlEbWmcbqCEw?as=scrollable" 
+                                    width="100%" 
+                                    height="500" 
+                                    style="border: 1px solid #eee; border-radius: 8px;"
+                                    allowfullscreen 
+                                    frameborder="0">
+                            </iframe>
+                        </div>
+                        <p style="color: #666; font-size: 0.9em;">If the guide doesn't load, <a href="https://scribehow.com/shared/How_to_Add_The_Focus_Zone_to_Your_Private_Page__aXFNIqOCSlOlEbWmcbqCEw" 
+                           style="color: #0984E3; text-decoration: none;">click here to view it in your browser</a>.</p>
                         <ol>
                             <li>Click the template link above</li>
                             <li>Click "Duplicate" in the top right corner</li>

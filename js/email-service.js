@@ -55,7 +55,7 @@ class EmailService {
                     </div>
 
                     <p style="margin-top: 20px;">
-                        Need help? Reply to this email or contact support@thefocuszone.com
+                        Need help? Reply to this email or contact thestbcompany@gmail.com
                     </p>
 
                     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; 

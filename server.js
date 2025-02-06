@@ -63,15 +63,18 @@ app.get('/', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Error:', err.stack);
-    console.error('Request details:', {
-        method: req.method,
-        url: req.url,
-        headers: req.headers,
-        body: req.body
-    });
+    // Only log details in development
+    if (process.env.NODE_ENV !== 'production') {
+        console.error('Request details:', {
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            body: req.body
+        });
+    }
     res.status(500).json({ 
         error: 'Something went wrong!',
-        message: err.message
+        message: process.env.NODE_ENV === 'production' ? 'An error occurred' : err.message
     });
 });
 

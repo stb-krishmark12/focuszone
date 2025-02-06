@@ -1,7 +1,7 @@
 // Payment handling with Razorpay
 class PaymentHandler {
     constructor() {
-        this.razorpayKey = 'rzp_test_BGdw0v0ZviO0up'
+        this.razorpayKey = 'rzp_live_pwylTqA4kZTsI4'
         this.amount = 5000; // Amount in paise (₹50)
         this.currency = 'INR';
         

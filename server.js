@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const templateRouter = require('./api/send-template');
 const testRouter = require('./api/test-email');
+const testRoutes = require('./api/test-routes');
 
 // Load environment variables
 dotenv.config();
@@ -13,17 +14,32 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`, {
+        body: req.body,
+        headers: req.headers
+    });
     next();
 });
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
 
 // Routes
+app.use('/api', testRoutes);
 app.use('/api/send-template', templateRouter);
 app.use('/api/test-email', testRouter);
+
+// Log all requests that reach this point
+app.use((req, res, next) => {
+    console.log('Unhandled request:', {
+        method: req.method,
+        url: req.url,
+        body: req.body
+    });
+    next();
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {

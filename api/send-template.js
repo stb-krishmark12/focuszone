@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const emailService = require('../js/email-service');
 
-router.post('/send-template', async (req, res) => {
+// Test route to verify the endpoint is working
+router.get('/', (req, res) => {
+    res.json({ message: 'Send template endpoint is working' });
+});
+
+router.post('/', async (req, res) => {
     try {
         console.log('Received email request:', req.body);
         const { paymentId, email } = req.body;

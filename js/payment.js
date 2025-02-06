@@ -68,24 +68,28 @@ class PaymentHandler {
                 email: this.options.prefill.email
             };
 
+            console.log('Payment successful:', paymentData);
+
             // Send confirmation email
             await this.sendConfirmationEmail(paymentData);
             
             // Show success message
             this.showSuccessMessage();
             
-            // Optional: Redirect to thank you page
-            // window.location.href = '/thank-you';
-            
         } catch (error) {
             console.error('Error processing payment:', error);
-            alert('There was an error processing your payment. Our team has been notified.');
+            // Show success message anyway since payment was successful
+            this.showSuccessMessage();
+            
+            // Log the error for debugging
+            console.error('Email sending failed but payment was successful:', error);
         }
     }
 
     // Send confirmation email
     async sendConfirmationEmail(paymentData) {
         try {
+            console.log('Sending confirmation email to:', paymentData.email);
             const response = await fetch('/api/send-template', {
                 method: 'POST',
                 headers: {
@@ -97,9 +101,16 @@ class PaymentHandler {
                 })
             });
 
+            console.log('Email API response:', response.status);
+
             if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Email API error:', errorData);
                 throw new Error('Failed to send confirmation email');
             }
+
+            const responseData = await response.json();
+            console.log('Email sent successfully:', responseData);
 
         } catch (error) {
             console.error('Error sending confirmation email:', error);

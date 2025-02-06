@@ -13,6 +13,7 @@ class EmailService {
     }
 
     async sendTemplateEmail(customerEmail, orderID, customerName = '') {
+        console.log('Preparing to send email to:', customerEmail);
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: customerEmail,
@@ -72,6 +73,10 @@ class EmailService {
             return true;
         } catch (error) {
             console.error('Error sending template email:', error);
+            console.error('Mail options:', {
+                ...mailOptions,
+                html: '(omitted)'
+            });
             throw error;
         }
     }

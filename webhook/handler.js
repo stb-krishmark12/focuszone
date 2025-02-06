@@ -3,13 +3,13 @@ const router = express.Router();
 const emailService = require('../js/email-service');
 const crypto = require('crypto');
 
-// Pageclip webhook secret from your Pageclip dashboard
-const PAGECLIP_SECRET = process.env.PAGECLIP_SECRET;
+// Pageclip API key from your Pageclip dashboard
+const PAGECLIP_API_KEY = process.env.PAGECLIP_API_KEY;
 
 // Verify Pageclip webhook signature
 function verifySignature(req) {
     const signature = req.headers['x-pageclip-signature'];
-    const hmac = crypto.createHmac('sha256', PAGECLIP_SECRET)
+    const hmac = crypto.createHmac('sha256', PAGECLIP_API_KEY)
         .update(JSON.stringify(req.body))
         .digest('hex');
     

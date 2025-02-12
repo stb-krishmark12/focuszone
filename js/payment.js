@@ -155,7 +155,7 @@ class PaymentHandler {
     // Send confirmation email
     async sendConfirmationEmail(paymentData) {
         try {
-            console.log('Sending confirmation email to:', paymentData.email);
+            console.log('Sending confirmation email with data:', paymentData);
             const response = await fetch(`${this.apiBaseUrl}/api/send-template`, {
                 method: 'POST',
                 headers: {
@@ -163,7 +163,9 @@ class PaymentHandler {
                 },
                 body: JSON.stringify({
                     paymentId: paymentData.razorpay_payment_id,
-                    email: paymentData.email
+                    email: paymentData.email,
+                    isGift: paymentData.isGift,
+                    giftData: paymentData.giftData
                 })
             });
 

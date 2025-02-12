@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
     try {
         console.log('Received email request:', req.body);
-        const { paymentId, email } = req.body;
+        const { paymentId, email, isGift, giftData } = req.body;
         
         if (!email || !paymentId) {
             return res.status(400).json({ 
@@ -19,9 +19,23 @@ router.post('/', async (req, res) => {
             });
         }
         
-        await emailService.sendTemplateEmail(email, paymentId);
+        if (isGift && giftData) {
+            // Send gift email to recipient
+            await emailService.sendTemplateEmail(email, paymentId, {
+                isGift,
+                giftData: {
+                    recipientName: giftData.recipientName,
+                    recipientEmail: giftData.recipientEmail,
+                    giftMessage: giftData.giftMessage,
+                    senderName: giftData.senderName
+                }
+            });
+        } else {
+            // Regular purchase email
+            await emailService.sendTemplateEmail(email, paymentId);
+        }
         
-        console.log('Email sent successfully to:', email);
+        console.log('Email sent successfully to:', isGift ? giftData.recipientEmail : email);
         res.status(200).json({ message: 'Template email sent successfully' });
     } catch (error) {
         console.error('Error in send-template endpoint:', error);

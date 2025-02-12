@@ -10,6 +10,31 @@ const ordersRouter = require('./api/orders');
 // Load environment variables
 dotenv.config();
 
+// Verify required environment variables
+const requiredEnvVars = [
+    'RAZORPAY_KEY',
+    'RAZORPAY_SECRET',
+    'EMAIL_USER',
+    'EMAIL_APP_PASSWORD',
+    'TEMPLATE_LINK'
+];
+
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+    console.error('Missing required environment variables:', missingEnvVars);
+    process.exit(1);
+}
+
+// Log environment status (but not sensitive values)
+console.log('Environment configuration:', {
+    NODE_ENV: process.env.NODE_ENV,
+    DOMAIN: process.env.DOMAIN,
+    hasRazorpayKey: !!process.env.RAZORPAY_KEY,
+    hasRazorpaySecret: !!process.env.RAZORPAY_SECRET,
+    hasEmailConfig: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

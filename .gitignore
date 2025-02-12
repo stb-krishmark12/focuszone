@@ -22,4 +22,7 @@ Thumbs.db
 
 # Build files
 dist/
-build/ 
+build/
+
+# Add if not already present
+*.log 

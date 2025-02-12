@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Razorpay = require('razorpay');
 
+// Check for required environment variables
+if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
+    console.error('Missing required environment variables: RAZORPAY_KEY and/or RAZORPAY_SECRET');
+    throw new Error('Missing required Razorpay configuration');
+}
+
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY,
     key_secret: process.env.RAZORPAY_SECRET
@@ -20,9 +26,10 @@ router.post('/create-order', async (req, res) => {
         }
 
         // Validate amount
-        if (amount !== 5000) { // ₹50 in paise
+        if (amount !== 50) { // ₹50 in paise
             return res.status(400).json({
-                error: 'Invalid amount'
+                error: 'Invalid amount',
+                message: 'Amount must be ₹50'
             });
         }
 

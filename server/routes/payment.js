@@ -12,21 +12,35 @@ const razorpay = new Razorpay({
 // Create order endpoint
 router.post('/api/create-order', async (req, res) => {
     try {
+        console.log('Received order creation request:', req.body); // Debug log
+
+        if (!req.body.amount || !req.body.currency) {
+            return res.status(400).json({ 
+                error: 'Missing required fields: amount and currency' 
+            });
+        }
+
         const options = {
             amount: req.body.amount,
             currency: req.body.currency,
             receipt: 'order_' + Date.now(),
-            payment_capture: 1, // Auto capture
+            payment_capture: 1,
             notes: {
                 template_name: 'The Focus Zone'
             }
         };
 
+        console.log('Creating order with options:', options); // Debug log
+
         const order = await razorpay.orders.create(options);
+        console.log('Order created successfully:', order); // Debug log
         res.json(order);
     } catch (error) {
         console.error('Error creating order:', error);
-        res.status(500).json({ error: 'Failed to create order' });
+        res.status(500).json({ 
+            error: 'Failed to create order',
+            details: error.message 
+        });
     }
 });
 
@@ -54,6 +68,11 @@ router.post('/api/verify-payment', (req, res) => {
         console.error('Error verifying payment:', error);
         res.status(500).json({ error: 'Payment verification failed' });
     }
+});
+
+// Add this route to test if the server is responding
+router.get('/api/test', (req, res) => {
+    res.json({ message: 'Payment API is working!' });
 });
 
 module.exports = router; 

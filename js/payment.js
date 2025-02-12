@@ -9,6 +9,7 @@ class PaymentHandler {
     // Create order on the server
     async createOrder() {
         try {
+            console.log('Initiating order creation...'); // Debug log
             const response = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: {
@@ -20,14 +21,17 @@ class PaymentHandler {
                 })
             });
 
+            const data = await response.json();
+            
             if (!response.ok) {
-                throw new Error('Failed to create order');
+                throw new Error(data.error || 'Failed to create order');
             }
 
-            return await response.json();
+            console.log('Order created:', data); // Debug log
+            return data;
         } catch (error) {
             console.error('Error creating order:', error);
-            throw error;
+            throw new Error(`Payment initialization failed: ${error.message}`);
         }
     }
 

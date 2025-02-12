@@ -10,7 +10,18 @@ const ordersRouter = require('./api/orders');
 // Load environment variables
 dotenv.config();
 
-// Verify required environment variables
+// Log all environment variables (excluding secrets)
+console.log('Available environment variables:', {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    DOMAIN: process.env.DOMAIN,
+    hasRazorpayKey: !!process.env.RAZORPAY_KEY,
+    hasRazorpaySecret: !!process.env.RAZORPAY_SECRET,
+    hasEmailConfig: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD,
+    hasTemplateLink: !!process.env.TEMPLATE_LINK
+});
+
+// Check required environment variables but don't exit
 const requiredEnvVars = [
     'RAZORPAY_KEY',
     'RAZORPAY_SECRET',
@@ -22,18 +33,11 @@ const requiredEnvVars = [
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingEnvVars.length > 0) {
-    console.error('Missing required environment variables:', missingEnvVars);
-    process.exit(1);
+    console.warn('⚠️ Missing environment variables:', missingEnvVars);
+    console.warn('Some features may be unavailable');
+} else {
+    console.log('✅ All required environment variables are present');
 }
-
-// Log environment status (but not sensitive values)
-console.log('Environment configuration:', {
-    NODE_ENV: process.env.NODE_ENV,
-    DOMAIN: process.env.DOMAIN,
-    hasRazorpayKey: !!process.env.RAZORPAY_KEY,
-    hasRazorpaySecret: !!process.env.RAZORPAY_SECRET,
-    hasEmailConfig: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD
-});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -89,7 +93,9 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString(),
         env: {
             node_env: process.env.NODE_ENV,
-            port: PORT
+            port: PORT,
+            hasRazorpay: !!process.env.RAZORPAY_KEY && !!process.env.RAZORPAY_SECRET,
+            hasEmail: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD
         }
     });
 });
@@ -99,6 +105,20 @@ app.get('/', (req, res) => {
     console.log('Serving index.html');
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// Add this route only in development
+if (process.env.NODE_ENV !== 'production') {
+    app.get('/debug/env', (req, res) => {
+        res.json({
+            environment: process.env.NODE_ENV,
+            hasRazorpayKey: !!process.env.RAZORPAY_KEY,
+            hasRazorpaySecret: !!process.env.RAZORPAY_SECRET,
+            hasEmailConfig: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD,
+            hasTemplateLink: !!process.env.TEMPLATE_LINK,
+            domain: process.env.DOMAIN
+        });
+    });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

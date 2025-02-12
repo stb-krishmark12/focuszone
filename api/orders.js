@@ -2,19 +2,33 @@ const express = require('express');
 const router = express.Router();
 const Razorpay = require('razorpay');
 
-// Check for required environment variables
-if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
-    console.error('Missing required environment variables: RAZORPAY_KEY and/or RAZORPAY_SECRET');
-    throw new Error('Missing required Razorpay configuration');
+// Initialize Razorpay with fallback handling
+let razorpay;
+try {
+    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
+        console.warn('⚠️ Razorpay credentials missing. Payment features will be disabled.');
+    } else {
+        razorpay = new Razorpay({
+            key_id: process.env.RAZORPAY_KEY,
+            key_secret: process.env.RAZORPAY_SECRET
+        });
+        console.log('✅ Razorpay initialized successfully');
+    }
+} catch (error) {
+    console.error('❌ Failed to initialize Razorpay:', error);
 }
-
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY,
-    key_secret: process.env.RAZORPAY_SECRET
-});
 
 router.post('/create-order', async (req, res) => {
     try {
+        // Check if Razorpay is initialized
+        if (!razorpay) {
+            console.error('Razorpay not initialized');
+            return res.status(503).json({
+                error: 'Payment service unavailable',
+                message: 'Payment system is currently unavailable. Please try again later.'
+            });
+        }
+
         const { amount, currency, email } = req.body;
         
         // Validate email format

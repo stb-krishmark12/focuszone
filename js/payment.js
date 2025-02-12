@@ -1,43 +1,47 @@
 // Payment handling with Razorpay
 class PaymentHandler {
     constructor() {
-        this.razorpayKey = 'rzp_live_pwylTqA4kZTsI4'
+        // Update Razorpay key to use environment variable
+        this.razorpayKey = 'rzp_live_ZQ3iVCqTSjcUUu';
         this.amount = 5000; // Amount in paise (₹50)
         this.currency = 'INR';
-    }
+        
+        // Get API base URL based on environment
+        this.apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:3000'
+            : 'https://stbcreators.space';
 
-    // Create order on the server
-    async createOrder() {
-        try {
-            console.log('Initiating order creation...'); // Debug log
-            const response = await fetch('/api/create-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    amount: this.amount,
-                    currency: this.currency
-                })
-            });
-
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to create order');
+        // Initialize base Razorpay options
+        this.options = {
+            key: this.razorpayKey,
+            currency: this.currency,
+            name: 'The Focus Zone',
+            description: 'Notion Template Purchase',
+            image: 'images/logo.png',
+            handler: this.handlePaymentSuccess.bind(this),
+            prefill: {
+                name: '',
+                email: '',
+                contact: ''
+            },
+            modal: {
+                ondismiss: function() {
+                    console.log('Payment modal closed');
+                }
+            },
+            notes: {
+                template_name: 'The Focus Zone'
+            },
+            theme: {
+                color: '#0984E3'
             }
-
-            console.log('Order created:', data); // Debug log
-            return data;
-        } catch (error) {
-            console.error('Error creating order:', error);
-            throw new Error(`Payment initialization failed: ${error.message}`);
-        }
+        };
     }
 
     // Initialize payment
     async initiatePayment(event) {
         event.preventDefault();
+        console.log('Starting payment flow...');
 
         // Get form data
         const name = document.getElementById('name').value;
@@ -51,38 +55,41 @@ class PaymentHandler {
         }
 
         try {
-            // Create order first
-            const orderData = await this.createOrder();
-            
-            // Configure Razorpay options with order_id
-            const options = {
-                key: this.razorpayKey,
+            console.log('Creating order with data:', {
                 amount: this.amount,
                 currency: this.currency,
-                name: 'The Focus Zone',
-                description: 'Notion Template Purchase',
-                image: 'images/logo.png',
-                order_id: orderData.id,
-                handler: (response) => this.handlePaymentSuccess(response),
-                prefill: {
-                    name: name,
-                    email: email,
-                    contact: phone
-                },
-                modal: {
-                    ondismiss: function() {
-                        console.log('Payment modal closed');
-                    }
-                },
-                notes: {
-                    template_name: 'The Focus Zone'
-                },
-                theme: {
-                    color: '#0984E3'
-                }
-            };
+                email: email
+            });
 
-            const rzp = new Razorpay(options);
+            const orderResponse = await fetch(`${this.apiBaseUrl}/api/create-order`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: this.amount,
+                    currency: this.currency,
+                    email: email
+                })
+            });
+
+            if (!orderResponse.ok) {
+                const errorData = await orderResponse.json();
+                console.error('Server error:', errorData);
+                throw new Error(errorData.error || 'Failed to create order');
+            }
+
+            const orderData = await orderResponse.json();
+            console.log('Order created successfully:', orderData);
+
+            // Update Razorpay options with order and user details
+            this.options.order_id = orderData.id;
+            this.options.amount = orderData.amount;
+            this.options.prefill.name = name;
+            this.options.prefill.email = email;
+            this.options.prefill.contact = phone;
+            
+            const rzp = new Razorpay(this.options);
             
             rzp.on('payment.failed', function (response) {
                 console.error('Payment failed:', response.error);
@@ -91,7 +98,10 @@ class PaymentHandler {
 
             rzp.open();
         } catch (error) {
-            console.error('Error initiating payment:', error);
+            console.error('Detailed payment error:', {
+                message: error.message,
+                stack: error.stack
+            });
             alert('Unable to initiate payment. Please try again.');
         }
     }
@@ -99,30 +109,14 @@ class PaymentHandler {
     // Handle successful payment
     async handlePaymentSuccess(response) {
         try {
-            // Verify payment on server
-            const verifyResponse = await fetch('/api/verify-payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_signature: response.razorpay_signature
-                })
-            });
-
-            if (!verifyResponse.ok) {
-                throw new Error('Payment verification failed');
-            }
-
             const paymentData = {
                 razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
                 amount: this.amount,
                 currency: this.currency,
-                email: document.getElementById('email').value
+                email: this.options.prefill.email
             };
+
+            console.log('Payment successful:', paymentData);
 
             // Send confirmation email
             await this.sendConfirmationEmail(paymentData);
@@ -143,7 +137,7 @@ class PaymentHandler {
     async sendConfirmationEmail(paymentData) {
         try {
             console.log('Sending confirmation email to:', paymentData.email);
-            const response = await fetch('/api/send-template', {
+            const response = await fetch(`${this.apiBaseUrl}/api/send-template`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

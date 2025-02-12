@@ -5,6 +5,7 @@ const cors = require('cors');
 const templateRouter = require('./api/send-template');
 const testRouter = require('./api/test-email');
 const testRoutes = require('./api/test-routes');
+const ordersRouter = require('./api/orders');
 
 // Load environment variables
 dotenv.config();
@@ -21,7 +22,20 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors());
+// Update CORS configuration based on environment
+const corsOptions = process.env.NODE_ENV === 'production' 
+    ? {
+        origin: 'https://stbcreators.space',
+        methods: ['GET', 'POST'],
+        credentials: true
+    } 
+    : {
+        origin: ['http://127.0.0.1:5500', 'http://localhost:5500', 'https://stbcreators.space'],
+        methods: ['GET', 'POST'],
+        credentials: true
+    };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
@@ -30,6 +44,7 @@ app.use(express.static(path.join(__dirname)));
 app.use('/api', testRoutes);
 app.use('/api/send-template', templateRouter);
 app.use('/api/test-email', testRouter);
+app.use('/api', ordersRouter);
 
 // Log all requests that reach this point
 app.use((req, res, next) => {

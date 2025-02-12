@@ -234,17 +234,45 @@
             </div>
             <form id="payment-form" class="payment-form" onsubmit="initiatePayment(event)">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
+                    <label for="name">Your Name</label>
                     <input type="text" id="name" placeholder="Enter your name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Your Email</label>
                     <input type="email" id="email" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Your Phone Number</label>
                     <input type="tel" id="phone" placeholder="Enter your phone number" required>
                 </div>
+                
+                <!-- Gift toggle section -->
+                <div class="form-group gift-toggle">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="isGift" onchange="toggleGiftFields()">
+                        <span class="toggle-text">🎁 Send as a gift</span>
+                        <span class="tooltip">Send this template as a gift to someone special!</span>
+                    </label>
+                </div>
+                
+                <!-- Gift fields (initially hidden) -->
+                <div id="giftFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="recipientName">Recipient's Name</label>
+                        <input type="text" id="recipientName" placeholder="Enter recipient's name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipientEmail">Recipient's Email</label>
+                        <input type="email" id="recipientEmail" placeholder="Enter recipient's email">
+                    </div>
+                    <div class="form-group">
+                        <label for="giftMessage">Personal Note</label>
+                        <textarea id="giftMessage" rows="3" placeholder="Add a personal message..."
+                        >Happy Valentine's Day! 💝 
+I wanted to gift you something special that could help you achieve your goals. Hope this template helps you stay organized and productive!</textarea>
+                    </div>
+                </div>
+
                 <button type="submit" class="submit-button">Proceed to Payment →</button>
             </form>
             <div class="modal-footer">

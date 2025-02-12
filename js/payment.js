@@ -47,16 +47,31 @@ class PaymentHandler {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
+            
+            // Get gift information
+            const isGift = document.getElementById('isGift').checked;
+            const giftData = isGift ? {
+                recipientName: document.getElementById('recipientName').value,
+                recipientEmail: document.getElementById('recipientEmail').value,
+                giftMessage: document.getElementById('giftMessage').value
+            } : null;
 
             if (!name || !email || !phone) {
-                alert('Please fill in all fields');
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (isGift && (!giftData.recipientName || !giftData.recipientEmail)) {
+                alert('Please fill in recipient details');
                 return;
             }
 
             console.log('📦 Creating order with data:', {
                 amount: this.amount,
                 currency: this.currency,
-                email: email
+                email: email,
+                isGift,
+                giftData
             });
 
             const orderResponse = await fetch('/api/create-order', {
@@ -67,7 +82,9 @@ class PaymentHandler {
                 body: JSON.stringify({
                     amount: this.amount,
                     currency: this.currency,
-                    email: email
+                    email: email,
+                    isGift,
+                    giftData
                 })
             });
 
@@ -103,11 +120,19 @@ class PaymentHandler {
     // Handle successful payment
     async handlePaymentSuccess(response) {
         try {
+            const isGift = document.getElementById('isGift').checked;
             const paymentData = {
                 razorpay_payment_id: response.razorpay_payment_id,
                 amount: this.amount,
                 currency: this.currency,
-                email: this.options.prefill.email
+                email: this.options.prefill.email,
+                isGift,
+                giftData: isGift ? {
+                    recipientName: document.getElementById('recipientName').value,
+                    recipientEmail: document.getElementById('recipientEmail').value,
+                    giftMessage: document.getElementById('giftMessage').value,
+                    senderName: document.getElementById('name').value
+                } : null
             };
 
             console.log('Payment successful:', paymentData);
@@ -189,4 +214,11 @@ function initiatePayment(event) {
         event.preventDefault();
     }
     paymentHandler.initiatePayment(event);
+}
+
+// Add this function to handle gift fields toggle
+function toggleGiftFields() {
+    const giftFields = document.getElementById('giftFields');
+    const isGift = document.getElementById('isGift').checked;
+    giftFields.style.display = isGift ? 'block' : 'none';
 } 

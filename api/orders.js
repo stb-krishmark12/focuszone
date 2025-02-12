@@ -2,38 +2,21 @@ const express = require('express');
 const router = express.Router();
 const Razorpay = require('razorpay');
 
-// Initialize Razorpay with fallback handling
-let razorpay;
-try {
-    if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
-        console.error('❌ Razorpay credentials missing:', {
-            hasKey: !!process.env.RAZORPAY_KEY,
-            hasSecret: !!process.env.RAZORPAY_SECRET
-        });
-    } else {
-        razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY,
-            key_secret: process.env.RAZORPAY_SECRET
-        });
-        console.log('✅ Razorpay initialized successfully');
-    }
-} catch (error) {
-    console.error('❌ Failed to initialize Razorpay:', error);
+// Ensure Razorpay credentials are available
+if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
+    throw new Error('Razorpay credentials are required');
 }
+
+// Initialize Razorpay
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY,
+    key_secret: process.env.RAZORPAY_SECRET
+});
 
 router.post('/create-order', async (req, res) => {
     console.log('📦 Create order request received:', req.body);
     
     try {
-        // Check if Razorpay is initialized
-        if (!razorpay) {
-            console.error('❌ Razorpay not initialized');
-            return res.status(503).json({
-                error: 'Payment service unavailable',
-                message: 'Payment system is currently unavailable. Please try again later.'
-            });
-        }
-
         const { amount, currency, email } = req.body;
         
         // Log received data
@@ -82,7 +65,6 @@ router.post('/create-order', async (req, res) => {
 
         console.log('🛠️ Creating order with options:', options);
 
-        // This internally calls https://api.razorpay.com/v1/orders
         const order = await razorpay.orders.create(options);
         console.log('✅ Order created successfully:', order);
         

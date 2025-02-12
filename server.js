@@ -39,6 +39,25 @@ if (missingEnvVars.length > 0) {
     console.log('✅ All required environment variables are present');
 }
 
+// After dotenv.config()
+console.log('🔍 Checking environment configuration...');
+
+// Verify Razorpay configuration
+if (!process.env.RAZORPAY_KEY || !process.env.RAZORPAY_SECRET) {
+    console.error('❌ Fatal Error: Razorpay credentials are required but missing');
+    console.error('Please set RAZORPAY_KEY and RAZORPAY_SECRET in environment variables');
+    process.exit(1); // Exit if critical configuration is missing
+}
+
+// Log successful configuration
+console.log('✅ Environment configuration loaded:', {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    hasRazorpayConfig: true,
+    hasEmailConfig: !!process.env.EMAIL_USER && !!process.env.EMAIL_APP_PASSWORD,
+    hasTemplateLink: !!process.env.TEMPLATE_LINK
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

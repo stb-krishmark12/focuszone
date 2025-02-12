@@ -3,13 +3,13 @@ class PaymentHandler {
     constructor() {
         // Update Razorpay key to use environment variable
         this.razorpayKey = 'rzp_live_ZQ3iVCqTSjcUUu';
-        this.amount = 50; // Amount in paise (₹50)
+        this.amount = 50; // Amount in rupees
         this.currency = 'INR';
         
         // Get API base URL based on environment
         this.apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
             ? 'http://localhost:3000'
-            : 'https://stbcreators.space';
+            : '';  // Empty string for same-origin requests in production
 
         // Initialize base Razorpay options
         this.options = {
@@ -25,7 +25,7 @@ class PaymentHandler {
                 contact: ''
             },
             modal: {
-                ondismiss: function() {
+                ondismiss: () => {
                     console.log('Payment modal closed');
                 }
             },
@@ -41,27 +41,25 @@ class PaymentHandler {
     // Initialize payment
     async initiatePayment(event) {
         event.preventDefault();
-        console.log('Starting payment flow...');
-
-        // Get form data
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-
-        // Validate form
-        if (!name || !email || !phone) {
-            alert('Please fill in all fields');
-            return;
-        }
+        console.log('🚀 Starting payment flow...');
 
         try {
-            console.log('Creating order with data:', {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            if (!name || !email || !phone) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            console.log('📦 Creating order with data:', {
                 amount: this.amount,
                 currency: this.currency,
                 email: email
             });
 
-            const orderResponse = await fetch(`${this.apiBaseUrl}/api/create-order`, {
+            const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,36 +71,32 @@ class PaymentHandler {
                 })
             });
 
+            const responseData = await orderResponse.json();
+
             if (!orderResponse.ok) {
-                const errorData = await orderResponse.json();
-                console.error('Server error:', errorData);
-                throw new Error(errorData.error || 'Failed to create order');
+                throw new Error(responseData.message || 'Failed to create order');
             }
 
-            const orderData = await orderResponse.json();
-            console.log('Order created successfully:', orderData);
+            console.log('✅ Order created successfully:', responseData);
 
-            // Update Razorpay options with order and user details
-            this.options.order_id = orderData.id;
-            this.options.amount = orderData.amount;
+            // Update Razorpay options
+            this.options.order_id = responseData.id;
+            this.options.amount = responseData.amount;
             this.options.prefill.name = name;
             this.options.prefill.email = email;
             this.options.prefill.contact = phone;
             
             const rzp = new Razorpay(this.options);
             
-            rzp.on('payment.failed', function (response) {
-                console.error('Payment failed:', response.error);
+            rzp.on('payment.failed', (response) => {
+                console.error('❌ Payment failed:', response.error);
                 alert('Payment failed. Please try again.');
             });
 
             rzp.open();
         } catch (error) {
-            console.error('Detailed payment error:', {
-                message: error.message,
-                stack: error.stack
-            });
-            alert('Unable to initiate payment. Please try again.');
+            console.error('❌ Payment error:', error);
+            alert(error.message || 'Unable to initiate payment. Please try again.');
         }
     }
 

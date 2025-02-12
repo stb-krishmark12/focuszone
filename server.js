@@ -44,10 +44,14 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`, {
-        body: req.body,
-        headers: req.headers
-    });
+    const logData = {
+        timestamp: new Date().toISOString(),
+        method: req.method,
+        url: req.url,
+        headers: req.headers,
+        body: req.method === 'POST' ? req.body : undefined
+    };
+    console.log('Request:', JSON.stringify(logData, null, 2));
     next();
 });
 
@@ -119,6 +123,20 @@ if (process.env.NODE_ENV !== 'production') {
         });
     });
 }
+
+// Add response logging
+app.use((req, res, next) => {
+    const oldSend = res.send;
+    res.send = function(data) {
+        console.log('Response:', {
+            url: req.url,
+            statusCode: res.statusCode,
+            data: data
+        });
+        oldSend.apply(res, arguments);
+    };
+    next();
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

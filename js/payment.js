@@ -4,37 +4,35 @@ class PaymentHandler {
         this.razorpayKey = 'rzp_live_pwylTqA4kZTsI4'
         this.amount = 5000; // Amount in paise (₹50)
         this.currency = 'INR';
-        
-        // Initialize Razorpay options
-        this.options = {
-            key: this.razorpayKey,
-            amount: this.amount,
-            currency: this.currency,
-            name: 'The Focus Zone',
-            description: 'Notion Template Purchase',
-            image: 'images/logo.png', // Add your logo image
-            handler: this.handlePaymentSuccess.bind(this),
-            prefill: {
-                name: '',
-                email: '',
-                contact: ''
-            },
-            modal: {
-                ondismiss: function() {
-                    console.log('Payment modal closed');
-                }
-            },
-            notes: {
-                template_name: 'The Focus Zone'
-            },
-            theme: {
-                color: '#0984E3'
+    }
+
+    // Create order on the server
+    async createOrder() {
+        try {
+            const response = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: this.amount,
+                    currency: this.currency
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create order');
             }
-        };
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error creating order:', error);
+            throw error;
+        }
     }
 
     // Initialize payment
-    initiatePayment(event) {
+    async initiatePayment(event) {
         event.preventDefault();
 
         // Get form data
@@ -48,32 +46,79 @@ class PaymentHandler {
             return;
         }
 
-        // Update Razorpay options with user details
-        this.options.prefill.name = name;
-        this.options.prefill.email = email;
-        this.options.prefill.contact = phone;
-        
-        const rzp = new Razorpay(this.options);
-        
-        rzp.on('payment.failed', function (response) {
-            console.error('Payment failed:', response.error);
-            alert('Payment failed. Please try again.');
-        });
+        try {
+            // Create order first
+            const orderData = await this.createOrder();
+            
+            // Configure Razorpay options with order_id
+            const options = {
+                key: this.razorpayKey,
+                amount: this.amount,
+                currency: this.currency,
+                name: 'The Focus Zone',
+                description: 'Notion Template Purchase',
+                image: 'images/logo.png',
+                order_id: orderData.id,
+                handler: (response) => this.handlePaymentSuccess(response),
+                prefill: {
+                    name: name,
+                    email: email,
+                    contact: phone
+                },
+                modal: {
+                    ondismiss: function() {
+                        console.log('Payment modal closed');
+                    }
+                },
+                notes: {
+                    template_name: 'The Focus Zone'
+                },
+                theme: {
+                    color: '#0984E3'
+                }
+            };
 
-        rzp.open();
+            const rzp = new Razorpay(options);
+            
+            rzp.on('payment.failed', function (response) {
+                console.error('Payment failed:', response.error);
+                alert('Payment failed. Please try again.');
+            });
+
+            rzp.open();
+        } catch (error) {
+            console.error('Error initiating payment:', error);
+            alert('Unable to initiate payment. Please try again.');
+        }
     }
 
     // Handle successful payment
     async handlePaymentSuccess(response) {
         try {
+            // Verify payment on server
+            const verifyResponse = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature
+                })
+            });
+
+            if (!verifyResponse.ok) {
+                throw new Error('Payment verification failed');
+            }
+
             const paymentData = {
                 razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
                 amount: this.amount,
                 currency: this.currency,
-                email: this.options.prefill.email
+                email: document.getElementById('email').value
             };
-
-            console.log('Payment successful:', paymentData);
 
             // Send confirmation email
             await this.sendConfirmationEmail(paymentData);

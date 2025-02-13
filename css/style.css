@@ -1285,6 +1285,7 @@ footer {
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 9999;
+    padding: 20px;
 }
 
 .modal.show {
@@ -1296,16 +1297,12 @@ footer {
     background: white;
     padding: 1.2rem;
     border-radius: 12px;
-    width: 90%;
-    max-width: 300px;
-    margin: 0 auto;
+    width: 95%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
+    margin: 20px auto;
 }
 
 .modal.show .modal-content {
@@ -1355,72 +1352,114 @@ footer {
 .payment-form {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    margin: 0.4rem 0;
+    gap: 0.8rem;
+    margin: 0.8rem 0;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
     text-align: left;
-    margin: 0;
+    margin-bottom: 0;
 }
 
 .form-group label {
-    font-weight: 600;
+    display: block;
+    font-weight: 500;
     color: #333;
     font-size: 0.75rem;
     text-transform: uppercase;
-    margin: 0;
+    margin-bottom: 2px;
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
     width: 100%;
-    padding: 0 0.8rem;
+    padding: 8px 10px;
+    font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background: #f5f5f5;
-    font-size: 0.8rem;
-    height: 32px;
-    margin: 0;
-    color: #333;
+    color: #000;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     border-color: #000;
     outline: none;
     box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
     background: white;
 }
 
-.form-group input::placeholder {
-    color: #999;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+}
+
+/* Submit button centered */
+.submit-button-container {
+    text-align: center;
+    margin: 1rem 0 0.5rem;
 }
 
 .submit-button {
     background: #FFD700;
-    color: black;
-    padding: 0;
+    color: #000;
+    padding: 10px 24px;
     border: none;
     border-radius: 6px;
-    font-family: var(--font-heading);
     font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    font-weight: 500;
     cursor: pointer;
-    margin: 0.4rem 0 0;
-    height: 32px;
+    min-width: 180px;
 }
 
-.submit-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+/* Gift toggle with less spacing */
+.gift-toggle {
+    margin: 8px 0;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
 }
 
-.modal-footer {
-    margin-top: 0.6rem;
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.toggle-label input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+}
+
+.toggle-text {
+    font-size: 13px;
+    color: #000;
+}
+
+/* Submit button centered */
+.submit-button-container {
     text-align: center;
+    margin: 1rem 0 0.5rem;
+}
+
+.submit-button {
+    background: #FFD700;
+    color: #000;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+/* Footer content centered */
+.modal-footer {
+    text-align: center;
+    margin-top: 0.5rem;
     color: #666;
 }
 
@@ -1433,180 +1472,115 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    margin-bottom: 0.2rem;
-    padding: 0.2rem;
-    background: #f8f8f8;
-    border-radius: 6px;
+    gap: 4px;
+    margin: 0.3rem 0;
 }
 
-.secure-badge span {
-    font-size: 1rem;
+/* Mobile adjustments */
+@media screen and (max-width: 480px) {
+    .modal-content {
+        padding: 1rem;
+        margin: 10px auto;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .gift-toggle {
+        padding: 8px;
+        margin: 6px 0;
+    }
 }
 
-.secure-badge p {
-    font-size: 0.7rem;
-    color: #666;
-    margin: 0;
+/* Razorpay iframe responsiveness */
+.razorpay-container {
+    max-width: 100% !important;
+    min-width: unset !important;
 }
 
-/* Darken image slightly on hover */
-.feature-preview:hover img {
-    transform: scale(1.05);
+/* Media queries for smaller screens */
+@media screen and (max-width: 480px) {
+    .modal {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    .modal-content {
+        margin: 10px auto;
+        padding: 1rem;
+        width: 100%;
+        max-height: 85vh;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .modal-price .sale-price {
+        font-size: 1.5rem;
+    }
+
+    .modal-price .regular-price {
+        font-size: 0.9rem;
+    }
+
+    .submit-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .modal-footer {
+        font-size: 12px;
+    }
+
+    .secure-badge {
+        padding: 8px;
+    }
+
+    /* Adjust gift fields for mobile */
+    #giftFields {
+        margin: 10px -5px;
+        padding: 10px;
+    }
+
+    textarea#giftMessage {
+        min-height: 60px;
+    }
+
+    .gift-toggle {
+        margin: 10px -5px;
+        padding: 10px;
+    }
+
+    .toggle-text {
+        font-size: 14px;
+    }
 }
 
-/* Feature items */
-.feature-item h3 {
-    margin: 1.5rem 0 0.5rem;
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    color: #222;
-}
+/* Fix Razorpay checkout modal */
+@media screen and (max-width: 480px) {
+    .razorpay-payment-button {
+        width: 100% !important;
+    }
 
-.feature-item p {
-    font-size: 0.95rem;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-}
-
-/* Stats */
-.stat-number {
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: 400;
-    display: block;
-    color: var(--accent-color);
-    letter-spacing: 0.01em;
-    margin-bottom: 0.3rem;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* Animated Preview Images */
-.pricing-previews {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.preview-float {
-    position: absolute;
-    width: 250px;
-    height: 160px;
-    border-radius: 10px;
-    overflow: hidden;
-    opacity: 0.2;
-    animation: float 8s infinite ease-in-out;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.preview-float img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.preview-float:nth-child(1) {
-    top: 20px;
-    left: 5%;
-    animation-delay: 0s;
-    transform: rotate(-8deg);
-}
-
-.preview-float:nth-child(2) {
-    top: 100px;
-    right: 5%;
-    animation-delay: 2s;
-    transform: rotate(8deg);
-}
-
-.preview-float:nth-child(3) {
-    bottom: 50px;
-    left: 15%;
-    animation-delay: 4s;
-    transform: rotate(-5deg);
-}
-
-.preview-float:nth-child(4) {
-    bottom: 80px;
-    right: 15%;
-    animation-delay: 6s;
-    transform: rotate(5deg);
-}
-
-@keyframes float {
-    0% { transform: translateY(0) rotate(-8deg); }
-    50% { transform: translateY(-15px) rotate(-4deg); }
-    100% { transform: translateY(0) rotate(-8deg); }
-}
-
-.static-buy {
-    position: relative;
-    z-index: 2;
-}
-
-/* Gift feature styles */
-.gift-toggle {
-    margin: 20px 0;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    position: relative;
-}
-
-.toggle-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.toggle-text {
-    margin-left: 8px;
-    font-weight: 500;
-}
-
-.tooltip {
-    position: absolute;
-    background: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.toggle-label:hover .tooltip {
-    opacity: 1;
-}
-
-#giftFields {
-    padding: 15px;
-    border: 1px solid #e1e4e8;
-    border-radius: 8px;
-    margin-top: 15px;
-    background: #fafbfc;
-}
-
-textarea#giftMessage {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
-    font-family: inherit;
+    .razorpay-checkout-frame {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+    }
 } 

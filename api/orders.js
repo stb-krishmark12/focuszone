@@ -31,16 +31,16 @@ router.post('/create-order', async (req, res) => {
             });
         }
 
-        // Convert amount to paise (₹1 = 100 paise)
+        // Convert amount to paise (₹50 = 5000 paise)
         const amountInPaise = amount * 100;
         console.log('💵 Amount in paise:', amountInPaise);
 
-        // Validate amount (allow ₹1 for testing)
-        if (amountInPaise !== 100) { // ₹1 in paise
+        // Validate amount (changed back to ₹50)
+        if (amountInPaise !== 5000) { // ₹50 in paise
             console.error('❌ Invalid amount:', amountInPaise);
             return res.status(400).json({
                 error: 'Invalid amount',
-                message: 'Amount must be ₹1'
+                message: 'Amount must be ₹50'
             });
         }
 

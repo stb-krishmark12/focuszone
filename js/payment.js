@@ -3,7 +3,7 @@ class PaymentHandler {
     constructor() {
         // Update Razorpay key to use environment variable
         this.razorpayKey = 'rzp_live_ZQ3iVCqTSjcUUu';
-        this.amount = 1; // Amount in rupees
+        this.amount = 50; // Changed back to ₹50
         this.currency = 'INR';
         
         // Get API base URL based on environment
